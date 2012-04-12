@@ -1,8 +1,10 @@
 #!/usr/bin/ruby
 
+require 'ping'
+
 #============================= OPTIONS ==============================#
 
-SCRIPT_VERSION = '1.0.1'
+SCRIPT_VERSION = '1.1.0'
 
 
 # == General Options for the backup.
@@ -35,16 +37,20 @@ RSYNC_OPTIONS = "-avz --delete --exclude='.DS_Store'"
 
 def backup()
    FOLDERS.each do |folder|
-   	puts "\n" + folder + "\n"
+      puts "\n" + folder + "\n"
       system("rsync #{RSYNC_OPTIONS} " + folder + " #{SSH_USER}@#{SSH_SERVER}:#{BACKUP_DIR}")
    end
    puts "\n" + EMAILS + "\n"
    system("rsync #{RSYNC_OPTIONS} " + EMAILS + " #{SSH_USER}@#{SSH_SERVER}:#{BACKUP_ROOT}")
 end
 
-START_TIME = Time.now
-puts "\nBackup started...\n"
-backup
-puts "\nStarted running at:  #{START_TIME}\n"
-puts "Finished running at: #{Time.now} - Duration: #{"%.0f" % ((Time.now - START_TIME)/60)} min, #{"%.0f" % ((Time.now - START_TIME) % 60)} sec\n"
-puts "Version " + SCRIPT_VERSION + "\n\n"
+if Ping.pingecho("#{SSH_USER}.#{SSH_SERVER}", 5)
+   START_TIME = Time.now
+   puts "\nBackup started...\n"
+   backup
+   puts "\nStarted running at:  #{START_TIME}\n"
+   puts "Finished running at: #{Time.now} - Duration: #{"%.0f" % ((Time.now - START_TIME)/60)} min, #{"%.0f" % ((Time.now - START_TIME) % 60)} sec\n"
+   puts "Version " + SCRIPT_VERSION + "\n\n"
+else
+   puts "\nConnection to server failed. Please try again later...\n\n"
+end
