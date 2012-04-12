@@ -2,7 +2,7 @@
 
 #============================= OPTIONS ==============================#
 
-SCRIPT_VERSION = '1.0.0'
+SCRIPT_VERSION = '1.0.1'
 
 
 # == General Options for the backup.
@@ -38,6 +38,7 @@ def backup()
    	puts "\n" + folder + "\n"
       system("rsync #{RSYNC_OPTIONS} " + folder + " #{SSH_USER}@#{SSH_SERVER}:#{BACKUP_DIR}")
    end
+   puts "\n" + EMAILS + "\n"
    system("rsync #{RSYNC_OPTIONS} " + EMAILS + " #{SSH_USER}@#{SSH_SERVER}:#{BACKUP_ROOT}")
 end
 
