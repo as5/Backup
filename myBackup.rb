@@ -29,8 +29,8 @@ NO_OF_BACKUPS  = 5
 
 # == Options for the remote machine.
 
-SSH_USER       = 'antonios'
-SSH_SERVER     = 'fornax.uberspace.de'
+SSH_USER       = 'user'
+SSH_SERVER     = 'some.server.de'
 BACKUP_ROOT    = 'files/backups'
 BACKUP_DIR     = BACKUP_ROOT + '/bkp_' + Time.now.strftime('%Y_%m_%d')
 
